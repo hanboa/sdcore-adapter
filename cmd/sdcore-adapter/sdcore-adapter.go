@@ -61,6 +61,23 @@ func synchronizerWrapper(s synchronizer.SynchronizerInterface) gnmi.ConfigCallba
 	}
 }
 
+func httpGetAtestationMessage() {
+	url := "http://localhost:8080/attestation"
+    resp, err := http.Get(url)
+    if err != nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        panic(err)
+    }
+
+    attestationResult := string(body) == "true"
+    fmt.Println(attestationResult)
+}
+
 func main() {
 	var sync synchronizer.SynchronizerInterface
 
